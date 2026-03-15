@@ -1,7 +1,14 @@
+import { homedir } from 'node:os';
+import { startRepl } from './repl.js';
+
 const main = async () => {
-  // Write your code here
-  //  — entry point, sets up REPL, handles navigation state
-    console.log('Welcome to Data Processing CLI!');
+  const homeDir = homedir();
+  process.chdir(homeDir);
+
+  console.log('Welcome to Data Processing CLI!');
+  console.log(`You are currently in ${homeDir}`);
+
+  startRepl();
 };
 
 await main();
