@@ -2,6 +2,7 @@ import readline from 'readline';
 import { up, cd, ls } from './navigation.js';
 import { csvToJson } from './commands/csvToJson.js';
 import { jsonToCsv } from './commands/jsonToCsv.js';
+import { count } from './commands/count.js';
 import { INVALID_INPUT_ERROR_MESSAGE } from './shared/errors.js';
 
 const getOption = (args, name) => {
@@ -81,6 +82,16 @@ export const startRepl = () => {
           console.log(INVALID_INPUT_ERROR_MESSAGE);
         } else {
           success = await jsonToCsv(inputPath, outputPath);
+        }
+        break;
+      }
+
+      case 'count': {
+        const inputPath = getOption(args, '--input');
+        if (!inputPath) {
+          console.log(INVALID_INPUT_ERROR_MESSAGE);
+        } else {
+          success = await count(inputPath);
         }
         break;
       }
