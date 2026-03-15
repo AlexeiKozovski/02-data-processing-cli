@@ -1,6 +1,14 @@
 import readline from 'readline';
 import { up, cd, ls } from './navigation.js';
+import { csvToJson } from './commands/csvToJson.js';
+import { jsonToCsv } from './commands/jsonToCsv.js';
 import { INVALID_INPUT_ERROR_MESSAGE } from './shared/errors.js';
+
+const getOption = (args, name) => {
+  const i = args.indexOf(name);
+  if (i === -1 || i === args.length - 1) return null;
+  return args[i + 1];
+};
 
 export const startRepl = () => {
   const rl = readline.createInterface({
@@ -54,6 +62,28 @@ export const startRepl = () => {
           success = await ls();
         }
         break;
+
+      case 'csv-to-json': {
+        const inputPath = getOption(args, '--input');
+        const outputPath = getOption(args, '--output');
+        if (!inputPath || !outputPath) {
+          console.log(INVALID_INPUT_ERROR_MESSAGE);
+        } else {
+          success = await csvToJson(inputPath, outputPath);
+        }
+        break;
+      }
+
+      case 'json-to-csv': {
+        const inputPath = getOption(args, '--input');
+        const outputPath = getOption(args, '--output');
+        if (!inputPath || !outputPath) {
+          console.log(INVALID_INPUT_ERROR_MESSAGE);
+        } else {
+          success = await jsonToCsv(inputPath, outputPath);
+        }
+        break;
+      }
 
       default:
         console.log(INVALID_INPUT_ERROR_MESSAGE);
